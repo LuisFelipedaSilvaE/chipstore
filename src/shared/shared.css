@@ -1,8 +1,26 @@
 :root {
   --sidebar-bg-color: #0d111d;
   --sidebar-item-focus: #181f2f;
-  --main-color: #00cdcd;
+  --main-color: #00e5ff;
+  --main-color-hover: #00cce6;
   --main-bg-color: #090d16;
+  --main-bg-color-composition: #34d399;
+  --second-bg-color: #0f1422;
+
+  --mini-card-bg-color: rgb(31 41 55 / 0.4);
+  --mini-card-border-color: rgb(55 65 81 / 0.3);
+  --input-login-bg-color: #151b2b;
+  --input-login-border-color: rgb(55 65 81 / 0.5);
+
+  --color-text: #fff;
+  --color-text-muted-300: #d1d5db;
+  --color-text-muted-400: #9ca3af;
+  --color-text-muted-500: #6b7280;
+  --color-text-button-submit: #0f1422;
+}
+
+button {
+  cursor: pointer;
 }
 
 .sidebar-item:hover:not(.bg-\[var\(--sidebar-item-focus\)\]) {
