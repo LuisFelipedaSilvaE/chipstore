@@ -1,0 +1,84 @@
+<nav
+  id="desktop-sidebar"
+  class="w-100 h-screen text-white flex flex-col bg-[var(--sidebar-bg-color)] border-r border-r-gray-800"
+>
+  <div class="flex items-center p-3 gap-2">
+    <div
+      class="relative before:shadow-[0px_0px_30px_10px_var(--main-color)] before:bottom-1/2 before:absolute before:right-1/2"
+    >
+      <img class="w-10 h-10" src="/images/icon.svg" alt="" />
+    </div>
+
+    <div class="flex">
+      <h4 class="font-bold">Chip</h4>
+      <h4 class="text-[var(--main-color)] font-bold">Store</h4>
+    </div>
+  </div>
+
+  <div class="p-3 border-y border-y-gray-800 flex-1">
+    <h5 class="text-sm ml-2 mb-2 text-gray-400">Gerenciamento</h5>
+    <ul class="list-none flex flex-col gap-2">
+      <li class="sidebar-item rounded-lg transition-all cursor-pointer">
+        <a class="flex-1 p-2 flex gap-2" href="/view/home.php">
+          <i
+            style="display: inline-flex"
+            class="fa fa-cubes basis-5 justify-center items-center"
+          ></i>
+          Dashboard</a
+        >
+      </li>
+      <li class="sidebar-item rounded-lg transition-all cursor-pointer">
+        <a class="flex-1 p-2 flex gap-2" href="/view/modules/produto/home.php">
+          <i
+            style="display: inline-flex"
+            class="fa fa-box basis-5 justify-center items-center"
+          ></i>
+          Produtos</a
+        >
+      </li>
+      <li class="sidebar-item rounded-lg transition-all cursor-pointer">
+        <a class="flex-1 p-2 flex gap-2" href="/view/modules/cliente/home.php">
+          <i
+            style="display: inline-flex"
+            class="fa fa-user-group basis-5 justify-center items-center"
+          ></i>
+          Clientes</a
+        >
+      </li>
+      <li class="sidebar-item rounded-lg transition-all cursor-pointer">
+        <a class="flex-1 p-2 flex gap-2" href="/view/modules/pedido/home.php">
+          <i
+            style="display: inline-flex"
+            class="fa fa-cart-shopping basis-5 justify-center items-center"
+          ></i>
+          Pedidos</a
+        >
+      </li>
+      <li class="sidebar-item rounded-lg transition-all cursor-pointer">
+        <a
+          class="flex-1 p-2 flex gap-2"
+          href="/view/modules/item-pedido/home.php"
+        >
+          <i
+            style="display: inline-flex"
+            class="fa fa-list-ol basis-5 justify-center items-center"
+          ></i
+          >Itens de Pedido</a
+        >
+      </li>
+    </ul>
+  </div>
+
+  <div class="flex flex-col gap-4 p-3">
+    <div>
+      <h3 class="font-semibold">Usuário</h3>
+      <h4 class="text-sm text-gray-400">EmailUsuario@gmail.com</h4>
+    </div>
+    <span
+      class="flex items-center gap-2 p-2 rounded-lg bg-[var(--main-bg-color)] cursor-pointer border border-gray-800"
+    >
+      <i class="fa fa-arrow-right-from-bracket"></i>
+      Sair
+    </span>
+  </div>
+</nav>
