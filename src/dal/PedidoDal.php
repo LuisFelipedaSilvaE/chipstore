@@ -23,7 +23,12 @@ class PedidoDal
 
             foreach ($dadosBrutos as $linha) {
                 $pedido = new Pedido();
-                $pedido->setId($linha['id']);
+                $pedido->setId($linha['id_pedido']);
+                $pedido->setIdCliente($linha['id_cliente']);
+                $pedido->setDataPedido($linha['data_pedido']);
+                $pedido->setStatus($linha['status']); 
+                $pedido->setPagamento($linha['pagamento']);
+                $pedido->setValorTotal($linha['valor_total']);
                 $listaPedidos[] = $pedido;
             }
 

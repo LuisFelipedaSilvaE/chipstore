@@ -12,18 +12,26 @@ class ClienteDal
   public function findAll()
   {
     try {
-      $sql = "SELECT * FROM pedido";
+      $sql = "SELECT * FROM cliente";
       $con = Conexao::conectar();
       $stmt = $con->prepare($sql);
       $stmt->execute();
       $dadosBrutos = $stmt->fetchAll(\PDO::FETCH_ASSOC);
-      $con = Conexao::desconectar();
+      
+      Conexao::desconectar(); 
 
       $listaClientes = [];
 
       foreach ($dadosBrutos as $linha) {
         $cliente = new Cliente();
-        $cliente->setId($linha['id']);
+        
+      
+        $cliente->setId($linha['id_cliente']);
+        $cliente->setNome($linha['nome']);
+        $cliente->setEmail($linha['email']);
+        $cliente->setTelefone($linha['telefone']);
+        $cliente->setCidade($linha['cidade']);
+
         $listaClientes[] = $cliente;
       }
 
@@ -36,23 +44,82 @@ class ClienteDal
   public function findById(int $id)
   {
     try {
-      $sql = "SELECT * FROM pedido WHERE id = ?";
+      $sql = "SELECT * FROM cliente WHERE id = ?";
       $con = Conexao::conectar();
       $stmt = $con->prepare($sql);
-      $stmt->execute(array($id));
+      
+    
+      $stmt->execute([$id]); 
       $dadoBruto = $stmt->fetch(\PDO::FETCH_ASSOC);
-      $con = Conexao::desconectar();
+      Conexao::desconectar();
 
       if (!$dadoBruto) {
         return null;
       }
 
       $cliente = new Cliente();
+      
       $cliente->setId($dadoBruto['id']);
+      $cliente->setNome($dadoBruto['nome']);
+      $cliente->setEmail($dadoBruto['email']);
+      $cliente->setTelefone($dadoBruto['telefone']);
+      $cliente->setCidade($dadoBruto['cidade']);
 
       return $cliente;
     } catch (\PDOException $e) {
       return null;
     }
   }
+
+    public function Insert(Cliente $cliente)
+    {
+        // Usando prepared statements
+        $sql = "INSERT INTO cliente (nome, email, telefone, cidade) VALUES (?, ?, ?, ?)";
+
+        $con = Conexao::conectar();
+        $query = $con->prepare($sql);
+        
+        $result = $query->execute([ 
+            $cliente->getNome(), 
+            $cliente->getEmail(), 
+            $cliente->getTelefone(), 
+            $cliente->getCidade()
+        ]);
+        
+        Conexao::desconectar();
+
+        return $result;
+    }
+
+    public function Update(Cliente $cliente)
+    {
+        $sql = "UPDATE cliente SET nome = ?, email = ?, senha = ?, telefone = ?, cidade = ? WHERE id = ?";
+
+        $con = Conexao::conectar();
+        $query = $con->prepare($sql);
+        
+        $result = $query->execute([ 
+            $cliente->getNome(), 
+            $cliente->getEmail(), 
+            $cliente->getTelefone(), 
+            $cliente->getCidade(),
+            $cliente->getId()
+        ]);
+        
+        Conexao::desconectar();
+
+        return $result;
+    }
+
+    public function Delete(int $id)
+    {
+        $sql = "DELETE FROM cliente WHERE id = ?";
+
+        $con = Conexao::conectar();
+        $query = $con->prepare($sql);
+        $result = $query->execute([$id]);
+        Conexao::desconectar();
+
+        return $result;
+    }
 }
