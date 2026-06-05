@@ -1,7 +1,7 @@
 <?php
 session_start();
+
 include_once($_SERVER['DOCUMENT_ROOT'] . '/dal/UsuarioDal.php');
-include_once($_SERVER['DOCUMENT_ROOT'] . '/model/Usuario.php');
 
 use \dal\UsuarioDal;
 

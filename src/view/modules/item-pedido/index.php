@@ -10,7 +10,7 @@
 
 <body class="bg-[var(--main-bg-color)]">
   <main class="flex w-screen h-screen">
-    <?php include_once($_SERVER['DOCUMENT_ROOT'] . '/shared/components/sidebar/sidebar.html') ?>
+    <?php include_once($_SERVER['DOCUMENT_ROOT'] . '/shared/components/sidebar/sidebar.php') ?>
   </main>
   <script src="/shared/components/sidebar/sidebar.js"></script>
 </body>
