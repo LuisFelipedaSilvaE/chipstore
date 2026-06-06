@@ -9,25 +9,28 @@ $dal = new UsuarioDal();
 $usuario = $dal->findById($idUsuarioLogado);
 ?>
 <aside class="text-white">
-  <div class="w-full flex flex-row items-center lg:hidden bg-[var(--sidebar-bg-color)] border-b border-b-gray-800 p-3 gap-4">
-    <i class="toggle-mobile-sidebar cursor-pointer rounded hover:bg-[var(--main-bg-color)] inline-flex bi bi-layout-sidebar-inset-reverse text-lg p-3 transition-colors"></i>
+  <div class="w-full flex flex-row items-center lg:hidden bg-[var(--sidebar-bg-color)] border-b border-b-gray-800 p-3 pr-0 gap-4">
 
-    <div class="flex items-center gap-2">
-      <div
-        class="relative before:shadow-[0px_0px_30px_10px_var(--main-color)] before:bottom-1/2 before:absolute before:right-1/2">
-        <img class="w-10 h-10" src="/images/icon.svg" alt="" />
-      </div>
 
-      <div class="flex">
-        <h4 class="font-bold">Chip</h4>
-        <h4 class="text-[var(--main-color)] font-bold">Store</h4>
+    <div class="flex items-center w-full justify-between">
+      <div class="flex gap-3 items-center">
+        <div
+          class="relative before:shadow-[0px_0px_30px_10px_var(--main-color)] before:bottom-1/2 before:absolute before:right-1/2">
+          <img class="w-10 h-10" src="/images/icon.svg" alt="" />
+        </div>
+
+        <div class="flex">
+          <h4 class="font-bold">Chip</h4>
+          <h4 class="text-[var(--main-color)] font-bold">Store</h4>
+        </div>
       </div>
+      <i id="toggle-mobile-sidebar-open" class="toggle-mobile-sidebar cursor-pointer rounded hover:bg-[var(--main-bg-color)] inline-flex bi bi-layout-sidebar-inset-reverse text-lg p-3 transition-colors"></i>
     </div>
   </div>
   <nav
     id="sidebar"
-    class="absolute top-0 right-full lg:static w-screen sm:w-4/5 lg:w-100 h-screen flex flex-col bg-[var(--sidebar-bg-color)] border-r border-r-gray-800 transition-all lg:translate-x-0 z-10">
-    <div class="sidebar-header flex items-center justify-center p-3 gap-2">
+    class="absolute top-0 right-full lg:static w-screen sm:w-4/5 lg:w-100 h-screen flex flex-col bg-[var(--sidebar-bg-color)] border-r border-r-gray-800 transition-all duration-300 ease-in-out lg:translate-x-0 z-10">
+    <div id="sidebar-header" class="sidebar-header flex items-center justify-center p-3 lg:pr-3 gap-2">
       <div
         id="sidebar-logo" class="relative before:shadow-[0px_0px_30px_10px_var(--main-color)] before:bottom-1/2 before:absolute before:right-1/2">
         <img class="w-10 h-10" src="/images/icon.svg" alt="" />
@@ -39,10 +42,10 @@ $usuario = $dal->findById($idUsuarioLogado);
       </div>
 
       <div id="collapse-side-bar" class="flex items-center justify-end flex-1">
-        <i class="inline-flex bi bi-chevron-bar-left cursor-pointer rounded hover:bg-[var(--main-bg-color)] p-3 transition-colors"></i>
+        <i class="inline-flex bi bi-layout-sidebar cursor-pointer rounded hover:bg-[var(--main-bg-color)] p-3 transition-colors"></i>
       </div>
-      <div id="uncollapse-side-bar" class="hidden items-center justify-end flex-1">
-        <i class="inline-flex bi bi-chevron-bar-right cursor-pointer rounded hover:bg-[var(--main-bg-color)] p-3 transition-colors"></i>
+      <div id="uncollapse-side-bar" class="hidden items-center justify-end">
+        <i class="inline-flex bi bi bi-layout-sidebar-reverse cursor-pointer rounded hover:bg-[var(--main-bg-color)] p-3 transition-colors"></i>
       </div>
       <div class="toggle-mobile-sidebar lg:hidden flex items-center justify-end flex-1">
         <i class="cursor-pointer rounded hover:bg-[var(--main-bg-color)] inline-flex bi bi-layout-sidebar-inset text-lg p-3 transition-colors"></i>

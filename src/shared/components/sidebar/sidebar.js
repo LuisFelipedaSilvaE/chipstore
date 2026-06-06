@@ -9,6 +9,7 @@ const mobileSidebarMask = document.querySelector('.sidebar-mobile-mask')
 const collapseSidebar = document.getElementById('collapse-side-bar')
 const uncollapseSidebar = document.getElementById('uncollapse-side-bar')
 const logoutButton = document.getElementById('logout-button')
+const toggleMobileSidebarOpen = document.getElementById('toggle-mobile-sidebar-open')
 
 const toggleMaskStyles = () => {
   if (mobileSidebarMask.classList.contains('hidden')) {
@@ -24,8 +25,8 @@ const toggleMaskStyles = () => {
   }
 }
 
-const collapseSidebarFunction = () => {
-  sidebarText.forEach((element) => {
+const collapseSidebarFunction = (instant = false) => {
+  sidebarText.forEach(element => {
     element.classList.toggle('lg:hidden')
   })
 
@@ -35,18 +36,38 @@ const collapseSidebarFunction = () => {
     uncollapseSidebar.classList.toggle('hidden')
   }
 
-  sidebarItemsLinks.forEach((element) => {
-    element.classList.toggle('lg:justify-center')
-  })
+  sidebar.classList.toggle('lg:w-100')
+  sidebar.classList.toggle('lg:w-20')
 
-  logoutButton.classList.toggle('lg:justify-center')
+  const isCollapsed = sidebar.classList.contains('lg:w-20')
+  localStorage.setItem('sidebar-collapsed', isCollapsed)
 
-  sidebar.classList.toggle('lg:w-fit')
+  const applyLinkChanges = () => {
+    sidebarItemsLinks.forEach(element => {
+      element.classList.toggle('lg:justify-center')
+    })
+    logoutButton.classList.toggle('lg:justify-center')
+  }
+
+  if (isCollapsed) {
+    document.getElementById('sidebar-header').classList.remove('justify-end')
+    if (instant) {
+      sidebar.classList.remove('transition-all', 'duration-300', 'ease-in-out')
+      applyLinkChanges()
+      sidebar.offsetHeight
+      sidebar.classList.add('transition-all', 'duration-300', 'ease-in-out')
+    } else {
+      setTimeout(applyLinkChanges, 300)
+    }
+  } else {
+    document.getElementById('sidebar-header').classList.add('justify-end')
+    applyLinkChanges()
+  }
 }
 
-uncollapseSidebar.addEventListener('click', collapseSidebarFunction)
+uncollapseSidebar.addEventListener('click', () => collapseSidebarFunction())
 
-collapseSidebar.addEventListener('click', collapseSidebarFunction)
+collapseSidebar.addEventListener('click', () => collapseSidebarFunction())
 
 // sidebarLogo.addEventListener('mouseover', () => {
 //   sidebarLogo.classList.toggle('hidden')
@@ -67,20 +88,27 @@ mobileSidebarMask.addEventListener('click', () => {
   toggleMaskStyles()
 })
 
-toggleSidebar.forEach((element) => {
+toggleSidebar.forEach(element => {
   element.addEventListener('click', () => {
     document.getElementById('sidebar').classList.toggle('translate-x-full')
 
     toggleMaskStyles()
+
+    console.log(toggleMobileSidebarOpen)
+
+    toggleMobileSidebarOpen.classList.toggle('hidden')
+    toggleMobileSidebarOpen.classList.toggle('inline-flex')
   })
 })
 
 sidebarItemsLinks.forEach((link, index) => {
   if (link.innerText === pageTitle.innerText) {
     sidebarItems[index].classList.add('bg-[var(--sidebar-item-focus)]')
-  } else if (
-    sidebarItems[index].classList.contains('bg-[var(--sidebar-item-focus)]')
-  ) {
+  } else if (sidebarItems[index].classList.contains('bg-[var(--sidebar-item-focus)]')) {
     sidebarItems[index].classList.remove('bg-[var(--sidebar-item-focus)]')
   }
 })
+
+if (localStorage.getItem('sidebar-collapsed') === 'true') {
+  collapseSidebarFunction(true)
+}

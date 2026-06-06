@@ -33,12 +33,12 @@ div.hidden-important {
 }
 
 @media (width >= 64rem) {
-  #sidebar.lg\:w-fit .sidebar-header:hover #sidebar-logo {
+  #sidebar.lg\:w-20 .sidebar-header:hover #sidebar-logo {
     display: none;
   }
 
-  #sidebar.lg\:w-fit .sidebar-header:hover #uncollapse-side-bar {
-    display: flex !important;
+  #sidebar.lg\:w-20 .sidebar-header:hover #uncollapse-side-bar {
+    display: inline-flex !important;
   }
 }
 
