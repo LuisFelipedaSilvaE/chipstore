@@ -1,4 +1,10 @@
-<?php session_start(); ?>
+<?php
+session_start();
+
+if (!isset($_SESSION['usuario-logado'])) {
+  header("Location: /view/login");
+}
+?>
 <!DOCTYPE html>
 <html lang="pt-br">
 

@@ -2,6 +2,10 @@
 session_start();
 include_once($_SERVER['DOCUMENT_ROOT'] . '/dal/ProdutoDal.php');
 
+if (!isset($_SESSION['usuario-logado'])) {
+  header("Location: /view/login");
+}
+
 use \dal\ProdutoDal;
 
 $dal = new ProdutoDal();
