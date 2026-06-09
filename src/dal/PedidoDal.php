@@ -60,4 +60,72 @@ class PedidoDal
             return null;
         }
     }
+    public function Insert(Pedido $pedido)
+    {
+        try {
+            $sql = "INSERT INTO pedido (idCliente, dataPedido, status, pagamento, valorTotal) VALUES (?, ?, ?, ?, ?)";
+
+            $con = Conexao::conectar();
+            $stmt = $con->prepare($sql);
+
+            $result = $stmt->execute([
+                $pedido->getIdCliente(),
+                $pedido->getDataPedido(),
+                $pedido->getStatus(),
+                $pedido->getPagamento(),
+                $pedido->getValorTotal(),
+            ]);
+
+            Conexao::desconectar();
+
+            return $result;
+        } catch (\PDOException $e) {
+            return false;
+        }
+    }
+
+    public function Update(Pedido $pedido)
+    {
+        try {
+            $sql = "UPDATE pedido SET idCliente = ?, dataPedido = ?, status = ?, pagamento = ?, valorTotal = ? WHERE id = ?";
+
+            $con = Conexao::conectar();
+            $stmt = $con->prepare($sql);
+
+            $result = $stmt->execute([
+                $pedido->getIdCliente(),
+                $pedido->getDataPedido(),
+                $pedido->getStatus(),
+                $pedido->getPagamento(),
+                $pedido->getValorTotal(),
+            ]);
+
+            Conexao::desconectar();
+
+            return $result;
+        } catch (\PDOException $e) {
+            return false;
+        }
+    }
+
+    public function Delete(int $id)
+    {
+        try {
+
+            $sql = "DELETE FROM pedido WHERE id = ?";
+
+            $con = Conexao::conectar();
+            $stmt = $con->prepare($sql);
+            $result = $stmt->execute([$id]);
+
+
+            $linhasAfetadas = $stmt->rowCount();
+
+            Conexao::desconectar();
+
+            return $linhasAfetadas > 0;
+        } catch (\PDOException $e) {
+            return false;
+        }
+    }
 }
