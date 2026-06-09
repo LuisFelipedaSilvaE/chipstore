@@ -17,15 +17,15 @@ class ClienteDal
       $stmt = $con->prepare($sql);
       $stmt->execute();
       $dadosBrutos = $stmt->fetchAll(\PDO::FETCH_ASSOC);
-      
-      Conexao::desconectar(); 
+
+      Conexao::desconectar();
 
       $listaClientes = [];
 
       foreach ($dadosBrutos as $linha) {
         $cliente = new Cliente();
-        
-      
+
+
         $cliente->setId($linha['id_cliente']);
         $cliente->setNome($linha['nome']);
         $cliente->setEmail($linha['email']);
@@ -47,9 +47,9 @@ class ClienteDal
       $sql = "SELECT * FROM cliente WHERE id = ?";
       $con = Conexao::conectar();
       $stmt = $con->prepare($sql);
-      
-    
-      $stmt->execute([$id]); 
+
+
+      $stmt->execute([$id]);
       $dadoBruto = $stmt->fetch(\PDO::FETCH_ASSOC);
       Conexao::desconectar();
 
@@ -58,7 +58,7 @@ class ClienteDal
       }
 
       $cliente = new Cliente();
-      
+
       $cliente->setId($dadoBruto['id']);
       $cliente->setNome($dadoBruto['nome']);
       $cliente->setEmail($dadoBruto['email']);
@@ -71,55 +71,71 @@ class ClienteDal
     }
   }
 
-    public function Insert(Cliente $cliente)
-    {
-        // Usando prepared statements
-        $sql = "INSERT INTO cliente (nome, email, telefone, cidade) VALUES (?, ?, ?, ?)";
+  public function Insert(Cliente $cliente)
+  {
+    try {
+      $sql = "INSERT INTO cliente (nome, email, telefone, cidade) VALUES (?, ?, ?, ?)";
 
-        $con = Conexao::conectar();
-        $query = $con->prepare($sql);
-        
-        $result = $query->execute([ 
-            $cliente->getNome(), 
-            $cliente->getEmail(), 
-            $cliente->getTelefone(), 
-            $cliente->getCidade()
-        ]);
-        
-        Conexao::desconectar();
+      $con = Conexao::conectar();
+      $stmt = $con->prepare($sql);
 
-        return $result;
+      $result = $stmt->execute([
+        $cliente->getNome(),
+        $cliente->getEmail(),
+        $cliente->getTelefone(),
+        $cliente->getCidade()
+      ]);
+
+      Conexao::desconectar();
+
+      return $result;
+    } catch (\PDOException $e) {
+      return false;
     }
+  }
 
-    public function Update(Cliente $cliente)
-    {
-        $sql = "UPDATE cliente SET nome = ?, email = ?, senha = ?, telefone = ?, cidade = ? WHERE id = ?";
+  public function Update(Cliente $cliente)
+  {
+    try {
+      $sql = "UPDATE cliente SET nome = ?, email = ?, senha = ?, telefone = ?, cidade = ? WHERE id = ?";
 
-        $con = Conexao::conectar();
-        $query = $con->prepare($sql);
-        
-        $result = $query->execute([ 
-            $cliente->getNome(), 
-            $cliente->getEmail(), 
-            $cliente->getTelefone(), 
-            $cliente->getCidade(),
-            $cliente->getId()
-        ]);
-        
-        Conexao::desconectar();
+      $con = Conexao::conectar();
+      $stmt = $con->prepare($sql);
 
-        return $result;
+      $result = $stmt->execute([
+        $cliente->getNome(),
+        $cliente->getEmail(),
+        $cliente->getTelefone(),
+        $cliente->getCidade(),
+        $cliente->getId()
+      ]);
+
+      Conexao::desconectar();
+
+      return $result;
+    } catch (\PDOException $e) {
+      return false;
     }
+  }
 
-    public function Delete(int $id)
-    {
-        $sql = "DELETE FROM cliente WHERE id = ?";
+  public function Delete(int $id)
+  {
+    try {
 
-        $con = Conexao::conectar();
-        $query = $con->prepare($sql);
-        $result = $query->execute([$id]);
-        Conexao::desconectar();
+      $sql = "DELETE FROM cliente WHERE id = ?";
 
-        return $result;
+      $con = Conexao::conectar();
+      $stmt = $con->prepare($sql);
+      $result = $stmt->execute([$id]);
+
+
+      $linhasAfetadas = $stmt->rowCount();
+
+      Conexao::desconectar();
+
+      return $linhasAfetadas > 0;
+    } catch (\PDOException $e) {
+      return false;
     }
+  }
 }

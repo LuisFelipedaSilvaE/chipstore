@@ -4,53 +4,53 @@ namespace model;
 
 class Pedido
 {
-    private ?int $id_pedido;
+    private ?int $id;
 
-    private ?int $id_cliente;
+    private ?int $idCliente;
 
-    private ?string $data_pedido;
+    private ?string $dataPedido;
 
     private ?string $status;
 
     private ?string $pagamento;
 
-    private ?float $valor_total;
+    private ?float $valorTotal;
 
 
     public function __construct() {}
 
-    public function getIdPedido()
+    public function getId()
     {
-        return $this->id_pedido;
+        return $this->id;
     }
 
-    public function setPedido(int $id_pedido)
+    public function setId(int $id)
     {
-        $this->id_pedido = $id_pedido;
+        $this->id = $id;
     }
 
     public function getIdCliente()
     {
-        return $this->id_cliente;
+        return $this->idCliente;
     }
 
-    public function setIdCliente(int $id_cliente)
+    public function setIdCliente(int $idCliente)
     {
-        $this->id_cliente = $id_cliente;
+        $this->idCliente = $idCliente;
     }
 
 
     public function getDataPedido()
     {
-        return $this->data_pedido;
+        return $this->dataPedido;
     }
 
-    public function setDataPedido(string $data_pedido)
+    public function setDataPedido(string $dataPedido)
     {
-        $this->data_pedido = $data_pedido;
+        $this->dataPedido = $dataPedido;
     }
 
-     public function getStatus()
+    public function getStatus()
     {
         return $this->status;
     }
@@ -60,7 +60,7 @@ class Pedido
         $this->status = $status;
     }
 
-     public function getPagamento()
+    public function getPagamento()
     {
         return $this->pagamento;
     }
@@ -72,11 +72,11 @@ class Pedido
 
     public function getValorTotal()
     {
-        return $this->valor_total;
+        return $this->valorTotal;
     }
 
-    public function setValorTotal(float $valor_total)
+    public function setValorTotal(float $valorTotal)
     {
-        $this->valor_total = $valor_total;
+        $this->valorTotal = $valorTotal;
     }
 }

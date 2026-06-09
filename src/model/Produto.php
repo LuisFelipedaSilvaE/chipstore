@@ -4,7 +4,7 @@ namespace model;
 
 class Produto
 {
-  private ?int $id_produto;
+  private ?int $id;
 
   private ?string $sku;
 
@@ -20,12 +20,12 @@ class Produto
 
   public function getId()
   {
-    return $this->id_produto;
+    return $this->id;
   }
 
-  public function setId(int $id_produto)
+  public function setId(int $id)
   {
-    $this->id_produto = $id_produto;
+    $this->id = $id;
   }
 
   public function getSku()

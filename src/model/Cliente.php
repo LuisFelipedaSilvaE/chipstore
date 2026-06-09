@@ -5,26 +5,26 @@ namespace model;
 
 class Cliente
 {
-    private ?int $id_cliente;
+    private ?int $id;
     private ?string $nome;
     private ?string $email;
     private ?string $senha;
     private ?string $telefone;
     private ?string $cidade;
-    private ?string $data_cadastro; 
-    
- 
+    private ?string $data_cadastro;
+
+
 
     public function __construct() {}
 
     public function getId()
     {
-        return $this->id_cliente;
+        return $this->id;
     }
 
     public function setId(int $id)
     {
-        $this->id_cliente = $id; 
+        $this->id = $id;
     }
 
     public function getNome()
@@ -52,7 +52,7 @@ class Cliente
         return $this->senha;
     }
 
-    public function setSenha(string $senha) 
+    public function setSenha(string $senha)
     {
         $this->senha = $senha;
     }
@@ -86,6 +86,4 @@ class Cliente
     {
         $this->data_cadastro = $data_cadastro;
     }
-
-    
 }

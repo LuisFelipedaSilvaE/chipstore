@@ -4,48 +4,48 @@ namespace model;
 
 class ItemPedido
 {
-    private ?int $id_item;
+    private ?int $id;
 
-    private ?int $id_pedido;
+    private ?int $idPedido;
 
-    private ?int $id_produto;
+    private ?int $idProduto;
 
     private ?int $quantidade;
 
-    private ?float $preco_unitario;
+    private ?float $precoUnitario;
 
     public function __construct() {}
 
     public function getId()
     {
-        return $this->id_item;
+        return $this->id;
     }
 
-    public function setId(int $id_item)
+    public function setId(int $id)
     {
-        $this->id_item = $id_item;
+        $this->id = $id;
     }
 
 
     public function getIdPedido()
     {
-        return $this->id_pedido;
+        return $this->idPedido;
     }
 
-    public function setIdPedido(int $id_pedido)
+    public function setIdPedido(int $idPedido)
     {
-        $this->id_pedido = $id_pedido;
+        $this->idPedido = $idPedido;
     }
 
 
     public function getIdProduto()
     {
-        return $this->id_produto;
+        return $this->idProduto;
     }
 
-    public function setIdProduto(int $id_produto)
+    public function setIdProduto(int $idProduto)
     {
-        $this->id_produto = $id_produto;
+        $this->idProduto = $idProduto;
     }
 
     public function getQuantidade()
@@ -60,11 +60,11 @@ class ItemPedido
 
     public function getPrecoUnitario()
     {
-        return $this->preco_unitario;
+        return $this->precoUnitario;
     }
 
     public function setPrecoUnitario(float $preco)
     {
-        $this->preco_unitario = $preco;
+        $this->precoUnitario = $preco;
     }
 }

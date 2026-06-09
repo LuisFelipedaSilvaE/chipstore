@@ -70,55 +70,70 @@ class ProdutoDal
 
     public function Insert(Produto $produto)
     {
-        // Usando prepared statements
-        $sql = "INSERT INTO produto (sku, nome, categoria, preco, estoque) VALUES (?, ?, ?, ?, ?)";
+        try {
+            $sql = "INSERT INTO produto (sku, nome, categoria, preco, estoque) VALUES (?, ?, ?, ?, ?)";
 
-        $con = Conexao::conectar();
-        $query = $con->prepare($sql);
+            $con = Conexao::conectar();
+            $stmt = $con->prepare($sql);
 
-        $result = $query->execute([
-            $produto->getSku(),
-            $produto->getNome(),
-            $produto->getCategoria(),
-            $produto->getPreco(),
-            $produto->getEstoque()
-        ]);
+            $result = $stmt->execute([
+                $produto->getSku(),
+                $produto->getNome(),
+                $produto->getCategoria(),
+                $produto->getPreco(),
+                $produto->getEstoque()
+            ]);
 
-        Conexao::desconectar();
+            Conexao::desconectar();
 
-        return $result;
+            return $result;
+        } catch (\PDOException $e) {
+            return false;
+        }
     }
 
     public function Update(Produto $produto)
     {
-        $sql = "UPDATE produto SET sku = ?, nome = ?, categoria = ?, preco = ?, estoque = ? WHERE id = ?";
+        try {
+            $sql = "UPDATE produto SET sku = ?, nome = ?, categoria = ?, preco = ?, estoque = ? WHERE id = ?";
 
-        $con = Conexao::conectar();
-        $query = $con->prepare($sql);
+            $con = Conexao::conectar();
+            $stmt = $con->prepare($sql);
 
-        $result = $query->execute([
-            $produto->getSku(),
-            $produto->getNome(),
-            $produto->getCategoria(),
-            $produto->getPreco(),
-            $produto->getEstoque(),
-            $produto->getId()
-        ]);
+            $result = $stmt->execute([
+                $produto->getSku(),
+                $produto->getNome(),
+                $produto->getCategoria(),
+                $produto->getPreco(),
+                $produto->getEstoque(),
+                $produto->getId()
+            ]);
 
-        Conexao::desconectar();
+            Conexao::desconectar();
 
-        return $result;
+            return $result;
+        } catch (\PDOException $e) {
+            return false;
+        }
     }
 
     public function Delete(int $id)
     {
-        $sql = "DELETE FROM produto WHERE id = ?";
+        try {
+            $sql = "DELETE FROM produto WHERE id = ?";
 
-        $con = Conexao::conectar();
-        $query = $con->prepare($sql);
-        $result = $query->execute([$id]);
-        Conexao::desconectar();
+            $con = Conexao::conectar();
+            $stmt = $con->prepare($sql);
+            $stmt->execute([$id]);
 
-        return $result;
+
+            $linhasAfetadas = $stmt->rowCount();
+
+            Conexao::desconectar();
+
+            return $linhasAfetadas > 0;
+        } catch (\PDOException $e) {
+            return false;
+        }
     }
 }
