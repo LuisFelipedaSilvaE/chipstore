@@ -1,5 +1,10 @@
-const dismissErrorMessage = document.getElementById('dismissErrorMessage')
+const dismissErrorMessages = document.querySelectorAll('.error-message')
+const dismissErrorMessageContainers = document.querySelectorAll(
+  '.error-message-container'
+)
 
-dismissErrorMessage?.addEventListener('click', () => {
-  document.getElementById('errorMessage').classList.add('hidden')
-})
+dismissErrorMessages?.forEach((button, index) =>
+  button.addEventListener('click', () => {
+    dismissErrorMessageContainers[index].classList.add('hidden')
+  })
+)

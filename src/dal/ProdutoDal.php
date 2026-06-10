@@ -88,6 +88,26 @@ class ProdutoDal
         }
     }
 
+    public function isSkuRegistered(string $sku)
+    {
+        try {
+            $sql = "SELECT sku FROM produto WHERE sku = ?";
+            $con = Conexao::conectar();
+            $stmt = $con->prepare($sql);
+            $stmt->execute([$sku]);
+            $dadoBruto = $stmt->fetch(\PDO::FETCH_ASSOC);
+            Conexao::desconectar();
+
+            if (!$dadoBruto) {
+                return false;
+            }
+
+            return true;
+        } catch (\PDOException $e) {
+            return false;
+        }
+    }
+
     public function Insert(Produto $produto)
     {
         try {

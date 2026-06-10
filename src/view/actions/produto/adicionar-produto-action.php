@@ -20,14 +20,23 @@ $produto->setPreco($preco);
 $produto->setSku($sku);
 
 $dal = new ProdutoDal();
+
+if ($dal->isSkuRegistered($sku)) {
+  $_SESSION['msg-erro-criando-produto-sku-invalido'] = true;
+  $_SESSION['conteudo-produto-erro'] = $produto;
+  header('Location: /view/modules/produto/adicionar/');
+  exit;
+}
+
 $result = $dal->Insert($produto);
+
 if ($result) {
   $_SESSION['msg-produto-criado'] = true;
   header('Location: /view/modules/produto/');
-} else {
-  $_SESSION['msg-erro-criando-produto'] = true;
-  $_SESSION['conteudo-produto-erro'] = $produto;
-  header('Location: /view/modules/produto/adicionar/');
+  exit;
 }
 
+$_SESSION['msg-erro-criando-produto'] = true;
+$_SESSION['conteudo-produto-erro'] = $produto;
+header('Location: /view/modules/produto/adicionar/');
 exit;

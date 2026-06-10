@@ -32,12 +32,21 @@ if (isset($_SESSION['conteudo-produto-erro'])) {
     </header>
     <div class="flex flex-col gap-4 mt-4 bg-(--secondary-bg-color) rounded-2xl p-6 border border-gray-800">
       <?php if (isset($_SESSION['msg-erro-criando-produto'])): ?>
-        <div id="errorMessage" class="flex gap-2 items-center justify-between bg-red-600/10 border border-red-600/50 rounded text-red-600 px-2 py-1">
+        <div class="error-message-container flex gap-2 items-center justify-between bg-red-600/10 border border-red-600/50 rounded text-red-600 px-2 py-1">
           Erro ao cadastrar produto.
-          <i id="dismissErrorMessage" class="fa fa-times cursor-pointer p-1"></i>
+          <i class="error-message fa fa-times cursor-pointer p-1"></i>
         </div>
       <?php
         unset($_SESSION['msg-erro-criando-produto']);
+      endif;
+      ?>
+      <?php if (isset($_SESSION['msg-erro-criando-produto-sku-invalido'])): ?>
+        <div class="error-message-container flex gap-2 items-center justify-between bg-red-600/10 border border-red-600/50 rounded text-red-600 px-2 py-1">
+          SKU já registrado. Informe outro valor.
+          <i class="error-message fa fa-times cursor-pointer p-1"></i>
+        </div>
+      <?php
+        unset($_SESSION['msg-erro-criando-produto-sku-invalido']);
       endif;
       ?>
       <form class="flex flex-col flex-wrap gap-8" method="POST" action="../../../actions/produto/adicionar-produto-action.php">
@@ -141,7 +150,7 @@ if (isset($_SESSION['conteudo-produto-erro'])) {
         </div>
         <div class="flex justify-end items-center gap-3 flex-col-reverse sm:flex-row">
           <a href="../" class="w-full sm:w-fit px-3 py-2 rounded-lg bg-(--main-bg-color) hover:ring-gray-400 hover:shadow-[0_0_7.5px] hover:shadow-gray-800 focus:shadow-[0_0_0_5px] focus:shadow-gray-800/10 transition-all border border-gray-800 text-center">Cancelar</a>
-          <button type="alert" class="w-full sm:w-fit px-3 py-2 rounded-lg bg-(--main-color) hover:shadow-[0_0_7.5px_var(--main-color)] focus:shadow-[0_0_0_5px_var(--main-color-transparent)] transition-all text-(--secondary-bg-color)">Salvar Produto</button>
+          <button type="submit" class="w-full sm:w-fit px-3 py-2 rounded-lg bg-(--main-color) hover:shadow-[0_0_7.5px_var(--main-color)] focus:shadow-[0_0_0_5px_var(--main-color-transparent)] transition-all text-(--secondary-bg-color)">Salvar Produto</button>
         </div>
       </form>
       <?php

@@ -166,7 +166,7 @@ if (isset($_SESSION['conteudo-editando-produto-erro'])) {
         </div>
         <div class="flex justify-end items-center gap-3 flex-col-reverse sm:flex-row">
           <a href="../" class="w-full sm:w-fit px-3 py-2 rounded-lg bg-(--main-bg-color) hover:ring-gray-400 hover:shadow-[0_0_7.5px] hover:shadow-gray-800 focus:shadow-[0_0_0_5px] focus:shadow-gray-800/10 transition-all border border-gray-800 text-center">Cancelar</a>
-          <button type="alert" class="w-full sm:w-fit px-3 py-2 rounded-lg bg-(--main-color) hover:shadow-[0_0_7.5px_var(--main-color)] focus:shadow-[0_0_0_5px_var(--main-color-transparent)] transition-all text-(--secondary-bg-color)">Salvar Alterações</button>
+          <button type="submit" class="w-full sm:w-fit px-3 py-2 rounded-lg bg-(--main-color) hover:shadow-[0_0_7.5px_var(--main-color)] focus:shadow-[0_0_0_5px_var(--main-color-transparent)] transition-all text-(--secondary-bg-color)">Salvar Alterações</button>
         </div>
       </form>
       <?php
