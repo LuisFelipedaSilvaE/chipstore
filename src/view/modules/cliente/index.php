@@ -1,9 +1,22 @@
 <?php
 session_start();
+include_once($_SERVER['DOCUMENT_ROOT'] . '/dal/ClienteDal.php');
 
 if (!isset($_SESSION['usuario-logado'])) {
   header("Location: /view/login");
 }
+
+use \dal\ClienteDal;
+
+$dal = new ClienteDal();
+$listaClientes = $dal->findAll();
+$quantidadeCadastrada = count($listaClientes);
+
+function normalizeDate(string $data)
+{
+  return substr($data, 8, 2) . '/' . substr($data, 5, 2) . '/' . substr($data, 0, 4);
+}
+
 ?>
 <!DOCTYPE html>
 <html lang="pt-br">
@@ -17,9 +30,119 @@ if (!isset($_SESSION['usuario-logado'])) {
 
 <body class="flex flex-col lg:flex-row bg-[var(--main-bg-color)] text-white">
   <?php include_once($_SERVER['DOCUMENT_ROOT'] . '/shared/components/sidebar/sidebar.php') ?>
-  <main class="flex-1 overflow-hidden p-3">
+  <main class="flex-1 overflow-hidden p-6">
+    <header class="flex flex-col sm:flex-row gap-4 sm:items-center justify-between">
+      <div class="flex gap-4 items-center">
+        <i class="[display:inline-flex!important] justify-center items-center bg-[var(--main-color-transparent)] text-[var(--main-color)] w-[60px] rounded-2xl fa fa-user-group text-4xl p-3"></i>
+        <div>
+          <h1 class="text-2xl font-bold">Clientes</h1>
+          <h2 class="text-gray-400"><?php echo $quantidadeCadastrada;
+                                    echo $quantidadeCadastrada != 1 ? " Clientes cadastrados" : " Cliente Cadastrado" ?>
+          </h2>
+        </div>
+      </div>
+      <a href="./adicionar/" class="cursor-pointer px-4 py-2 bg-(--main-color) text-(--main-bg-color) w-full sm:w-fit rounded-lg hover:shadow-[0_0_7.5px_var(--main-color)] focus:shadow-[0_0_0_5px_var(--main-color-transparent)] transition-all"><i class="fa fa-plus"></i> Novo Cliente</a>
+    </header>
+    <?php if (isset($_SESSION['msg-cliente-criado'])): ?>
+      <div id="successMessage" class="flex gap-2 items-center justify-between bg-green-600/10 border border-green-600/50 rounded text-green-600 px-2 py-1 mt-4">
+        Cliente cadastrado com sucesso.
+        <i id="dismissSuccessMessage" class="fa fa-times cursor-pointer p-1"></i>
+      </div>
+    <?php
+      unset($_SESSION['msg-cliente-criado']);
+    endif;
+    ?>
+    <?php if (isset($_SESSION['msg-cliente-editado-sucesso'])): ?>
+      <div id="successMessage" class="flex gap-2 items-center justify-between bg-green-600/10 border border-green-600/50 rounded text-green-600 px-2 py-1 mt-4">
+        Cliente editado com sucesso.
+        <i id="dismissSuccessMessage" class="fa fa-times cursor-pointer p-1"></i>
+      </div>
+    <?php
+      unset($_SESSION['msg-cliente-editado-sucesso']);
+    endif;
+    ?>
+    <?php if (isset($_SESSION['msg-cliente-deletado-sucesso'])): ?>
+      <div id="successMessage" class="flex gap-2 items-center justify-between bg-green-600/10 border border-green-600/50 rounded text-green-600 px-2 py-1 mt-4">
+        Cliente removido com sucesso.
+        <i id="dismissSuccessMessage" class="fa fa-times cursor-pointer p-1"></i>
+      </div>
+    <?php
+      unset($_SESSION['msg-cliente-deletado-sucesso']);
+    endif;
+    ?>
+    <?php if (isset($_SESSION['msg-cliente-deletado-erro'])): ?>
+      <div id="successMessage" class="flex gap-2 items-center justify-between bg-red-600/10 border border-red-600/50 rounded text-red-600 px-2 py-1 mt-4">
+        Erro ao remover cliente.
+        <i id="dismissSuccessMessage" class="fa fa-times cursor-pointer p-1"></i>
+      </div>
+    <?php
+      unset($_SESSION['msg-cliente-deletado-erro']);
+    endif;
+    ?>
+    <div class="border border-gray-800 mt-6 rounded-2xl overflow-auto scrollbar-none max-h-194.5">
+      <table class="border-collapse w-full min-w-220">
+        <thead class="border-b border-b-gray-800 px-2">
+          <tr class="text-gray-400">
+            <th class="py-3 pl-4 text-left">Cliente</th>
+            <th class="py-3">Telefone</th>
+            <th class="py-3">Cidade</th>
+            <th class="py-3">Perfil</th>
+            <th class="py-3 pr-4">Desde</th>
+            <th class="py-3 pr-4">Ações</th>
+          </tr>
+        </thead>
+        <tbody>
+          <?php foreach ($listaClientes as $cliente): ?>
+            <tr class="last:border-b-0 border-b border-b-gray-800 font-bold">
+              <td class="py-4 pl-4">
+                <div>
+                  <h3 class="client-name font-semibold whitespace-nowrap overflow-hidden max-w-full"><?php echo $cliente->getNome() ?></h3>
+                  <h4 class="text-sm text-gray-400 whitespace-nowrap overflow-hidden max-w-full"><?php echo $cliente->getEmail() ?></h4>
+                </div>
+              </td>
+              <td class="py-4 text-center">
+                <?php echo $cliente->getTelefone() ?>
+              </td>
+              <td class="py-4 text-center"><?php echo $cliente->getCidade() ?></td>
+              <td class="py-4 text-center">
+                <div class="flex justify-center items-center">
+                  <p class="px-2 py-1 rounded-full bg-purple-600/20 w-fit text-purple-400 text-sm">
+                    Cliente
+                  </p>
+                </div>
+              </td>
+              <td class="py-4 text-center"><?php echo normalizeDate($cliente->getDataCadastro()) ?></td>
+              <td class="py-4 pr-4 text-center">
+                <a href="./editar/?id=<?php echo $cliente->getId() ?>" class="inline-flex justify-center items-center w-10 h-10 p-1 rounded-md hover:bg-(--secondary-bg-color) cursor-pointer transition-all focus:shadow-[0_0_0_5px_var(--secondary-bg-color-transparent)]"><i class="fa fa-pencil text-gray-400"></i></a>
+                <button data-cliente-id="<?php echo $cliente->getId() ?>" class="delete-button inline-flex justify-center items-center w-10 h-10 p-1 rounded-md hover:bg-(--secondary-bg-color) transition-all focus:shadow-[0_0_0_5px_var(--secondary-bg-color-transparent)]"><i class="fa fa-trash-alt text-red-600"></i></button>
+              </td>
+            </tr>
+          <?php endforeach; ?>
+        </tbody>
+      </table>
+    </div>
   </main>
+  <div id="delete-confirmation-dialog-mask" class="hidden opacity-0 fixed w-screen h-screen bg-black/50 transition-opacity"></div>
+  <div id="delete-confirmation-dialog" class="[transition:opacity_150ms_cubic-bezier(0.4,0,0.2,1),_scale_150ms_cubic-bezier(0.4,0,0.2,1)] hidden opacity-0 scale-0 fixed left-1/2 top-1/2 translate-x-[-50%] translate-y-[-50%] z-10 max-w-160 w-full sm:w-3/4 border border-gray-800 overflow-hidden sm:rounded-md">
+    <div class="flex pl-4 items-center bg-(--secondary-bg-color) border-b border-b-gray-800">
+      <p class="flex-1">Exclusão de Cliente</p>
+      <i class="dialog-dismiss-button [display:inline-flex!important] items-center justify-center w-10 h-10 fa fa-times p-3 cursor-pointer transition-colors hover:bg-(--main-bg-color)"></i>
+    </div>
+    <div class="flex flex-col gap-4 bg-(--main-bg-color) p-4">
+      <div class="flex items-center gap-2">
+        <i class="fa fa-triangle-exclamation"></i>
+        <p>Tem Certeza que deseja remover o(a) cliente <b id="client-to-delete-name"></b>?</p>
+
+      </div>
+      <div class="flex justify-end items-center gap-3">
+        <button class="dialog-dismiss-button px-3 py-2 rounded-lg bg-(--main-bg-color) hover:ring-gray-400 hover:shadow-[0_0_7.5px] hover:shadow-gray-800 focus:shadow-[0_0_0_5px] focus:shadow-gray-800/10 transition-all border border-gray-800 text-center">Cancelar</button>
+        <a id="dialog-confirm-button" href="" class="px-3 py-2 rounded-lg bg-(--main-color) hover:shadow-[0_0_7.5px_var(--main-color)] focus:shadow-[0_0_0_5px_var(--main-color-transparent)] transition-all text-(--secondary-bg-color) cursor-pointer text-center">Confirmar</a>
+      </div>
+    </div>
+  </div>
+
   <script src="/shared/components/sidebar/sidebar.js"></script>
+  <script src="./script.js"></script>
 </body>
 
 </html>
