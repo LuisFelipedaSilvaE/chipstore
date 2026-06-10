@@ -29,7 +29,7 @@ if ($dal->isEmailRegistered($email)) {
 $result = $dal->Insert($cliente);
 
 if ($result) {
-  $_SESSION['msg-produto-criado'] = true;
+  $_SESSION['msg-cliente-criado'] = true;
   header('Location: /view/modules/cliente/');
   exit;
 }
