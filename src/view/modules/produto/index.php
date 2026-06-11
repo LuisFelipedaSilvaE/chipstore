@@ -12,6 +12,11 @@ $dal = new ProdutoDal();
 $listaProdutos = $dal->findAll();
 $quantidadeCadastrada = count($listaProdutos);
 
+function normalizePrice($preco)
+{
+  return number_format($preco, 2, ',', '.');
+}
+
 ?>
 <!DOCTYPE html>
 <html lang="pt-br">
@@ -96,7 +101,7 @@ $quantidadeCadastrada = count($listaProdutos);
                   </p>
                 </div>
               </td>
-              <td class="py-4 text-center text-(--main-color)">R$ <?php echo $produto->getPreco() ?></td>
+              <td class="py-4 text-center text-(--main-color)">R$ <?php echo  normalizePrice($produto->getPreco()) ?></td>
               <td class="py-4 text-center"><?php echo $produto->getEstoque() ?></td>
               <td class="py-4 pr-4 text-center">
                 <a href="./editar/?id=<?php echo $produto->getId() ?>" class="inline-flex justify-center items-center w-10 h-10 p-1 rounded-md hover:bg-(--secondary-bg-color) cursor-pointer transition-all focus:shadow-[0_0_0_5px_var(--secondary-bg-color-transparent)]"><i class="fa fa-pencil text-gray-400"></i></a>
