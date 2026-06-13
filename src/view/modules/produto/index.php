@@ -41,7 +41,7 @@ function normalizePrice($preco)
           </h2>
         </div>
       </div>
-      <a href="./adicionar/" class="cursor-pointer px-4 py-2 bg-(--main-color) text-(--main-bg-color) w-full sm:w-fit rounded-lg hover:shadow-[0_0_7.5px_var(--main-color)] focus:shadow-[0_0_0_5px_var(--main-color-transparent)] transition-all"><i class="fa fa-plus"></i> Novo Produto</a>
+      <a href="./adicionar/" class="cursor-pointer px-4 py-2 bg-(--main-color) text-(--main-bg-color) w-full sm:w-fit rounded-lg hover:shadow-[0_0_7.5px_var(--main-color)] focus:shadow-[0_0_0_5px_var(--main-color-transparent)] transition-all flex items-center justify-center gap-2"><i class="bi bi-bag-plus-fill"></i> Novo Produto</a>
     </header>
     <?php if (isset($_SESSION['msg-produto-criado'])): ?>
       <div class="message-container flex gap-2 items-center justify-between bg-green-600/10 border border-green-600/50 rounded text-green-600 px-2 py-1 mt-4">
