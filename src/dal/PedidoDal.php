@@ -12,7 +12,10 @@ class PedidoDal
     public function findAll()
     {
         try {
-            $sql = "SELECT * FROM pedido";
+            $sql = "SELECT pedido.*, cliente.nome AS nomeCliente
+                    FROM pedido
+                    INNER JOIN cliente ON cliente.id = pedido.idCliente
+                    ORDER BY pedido.dataPedido DESC, pedido.id DESC";
             $con = Conexao::conectar();
             $stmt = $con->prepare($sql);
             $stmt->execute();
@@ -23,12 +26,13 @@ class PedidoDal
 
             foreach ($dadosBrutos as $linha) {
                 $pedido = new Pedido();
-                $pedido->setId($linha['id_pedido']);
-                $pedido->setIdCliente($linha['id_cliente']);
-                $pedido->setDataPedido($linha['data_pedido']);
-                $pedido->setStatus($linha['status']); 
+                $pedido->setId($linha['id']);
+                $pedido->setIdCliente($linha['idCliente']);
+                $pedido->setNomeCliente($linha['nomeCliente']);
+                $pedido->setDataPedido($linha['dataPedido']);
+                $pedido->setStatus($linha['status']);
                 $pedido->setPagamento($linha['pagamento']);
-                $pedido->setValorTotal($linha['valor_total']);
+                $pedido->setValorTotal($linha['valorTotal']);
                 $listaPedidos[] = $pedido;
             }
 
@@ -54,6 +58,11 @@ class PedidoDal
 
             $pedido = new Pedido();
             $pedido->setId($dadoBruto['id']);
+            $pedido->setIdCliente($dadoBruto['idCliente']);
+            $pedido->setDataPedido($dadoBruto['dataPedido']);
+            $pedido->setStatus($dadoBruto['status']);
+            $pedido->setPagamento($dadoBruto['pagamento']);
+            $pedido->setValorTotal($dadoBruto['valorTotal']);
 
             return $pedido;
         } catch (\PDOException $e) {
@@ -84,6 +93,22 @@ class PedidoDal
         }
     }
 
+    public function InsertAndReturnId(Pedido $pedido, \PDO $con)
+    {
+        $sql = "INSERT INTO pedido (idCliente, dataPedido, status, pagamento, valorTotal)
+                VALUES (?, ?, ?, ?, ?)";
+        $stmt = $con->prepare($sql);
+        $result = $stmt->execute([
+            $pedido->getIdCliente(),
+            $pedido->getDataPedido(),
+            $pedido->getStatus(),
+            $pedido->getPagamento(),
+            $pedido->getValorTotal(),
+        ]);
+
+        return $result ? (int) $con->lastInsertId() : null;
+    }
+
     public function Update(Pedido $pedido)
     {
         try {
@@ -98,6 +123,7 @@ class PedidoDal
                 $pedido->getStatus(),
                 $pedido->getPagamento(),
                 $pedido->getValorTotal(),
+                $pedido->getId(),
             ]);
 
             Conexao::desconectar();
@@ -108,23 +134,66 @@ class PedidoDal
         }
     }
 
+    public function UpdateWithConnection(Pedido $pedido, \PDO $con)
+    {
+        $sql = "UPDATE pedido
+                SET idCliente = ?, dataPedido = ?, status = ?, pagamento = ?, valorTotal = ?
+                WHERE id = ?";
+        $stmt = $con->prepare($sql);
+        $stmt->execute([
+            $pedido->getIdCliente(),
+            $pedido->getDataPedido(),
+            $pedido->getStatus(),
+            $pedido->getPagamento(),
+            $pedido->getValorTotal(),
+            $pedido->getId(),
+        ]);
+
+        return $stmt->rowCount() >= 0;
+    }
+
     public function Delete(int $id)
     {
+        $con = null;
+
         try {
-
-            $sql = "DELETE FROM pedido WHERE id = ?";
-
             $con = Conexao::conectar();
-            $stmt = $con->prepare($sql);
-            $result = $stmt->execute([$id]);
+            $con->beginTransaction();
 
+            $itensStmt = $con->prepare(
+                "SELECT idProduto, quantidade FROM itemPedido WHERE idPedido = ? FOR UPDATE"
+            );
+            $itensStmt->execute([$id]);
+            $itens = $itensStmt->fetchAll(\PDO::FETCH_ASSOC);
 
+            $estoqueStmt = $con->prepare(
+                "UPDATE produto SET estoque = estoque + ? WHERE id = ?"
+            );
+
+            foreach ($itens as $item) {
+                $estoqueStmt->execute([$item['quantidade'], $item['idProduto']]);
+            }
+
+            $stmt = $con->prepare("DELETE FROM pedido WHERE id = ?");
+            $stmt->execute([$id]);
             $linhasAfetadas = $stmt->rowCount();
 
+            if ($linhasAfetadas === 0) {
+                $con->rollBack();
+                Conexao::desconectar();
+                return false;
+            }
+
+            $con->commit();
             Conexao::desconectar();
 
-            return $linhasAfetadas > 0;
-        } catch (\PDOException $e) {
+            return true;
+        } catch (\Throwable $e) {
+            if ($con && $con->inTransaction()) {
+                $con->rollBack();
+            }
+
+            Conexao::desconectar();
             return false;
         }
     }

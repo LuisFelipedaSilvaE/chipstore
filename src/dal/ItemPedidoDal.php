@@ -9,50 +9,70 @@ use \model\ItemPedido;
 
 class ItemPedidoDal
 {
-  public function findAll()
+  public function findByPedido(int $idPedido)
   {
     try {
-      $sql = "SELECT * FROM pedido";
+      $sql = "SELECT * FROM itemPedido WHERE idPedido = ?";
       $con = Conexao::conectar();
       $stmt = $con->prepare($sql);
-      $stmt->execute();
+      $stmt->execute([$idPedido]);
       $dadosBrutos = $stmt->fetchAll(\PDO::FETCH_ASSOC);
-      $con = Conexao::desconectar();
+      Conexao::desconectar();
 
-      $listaItensPedido = [];
+      $itens = [];
 
       foreach ($dadosBrutos as $linha) {
-        $itemPedido = new ItemPedido();
-        $itemPedido->setId($linha['id']);
-        $listaItensPedido[] = $itemPedido;
+        $item = new ItemPedido();
+        $item->setIdPedido($linha['idPedido']);
+        $item->setIdProduto($linha['idProduto']);
+        $item->setQuantidade($linha['quantidade']);
+        $item->setPrecoUnitario($linha['precoUnitario']);
+        $itens[] = $item;
       }
 
-      return $listaItensPedido;
+      return $itens;
     } catch (\PDOException $e) {
       return [];
     }
   }
 
-  public function findById(int $id)
+  public function findByPedidoForUpdate(int $idPedido, \PDO $con)
   {
-    try {
-      $sql = "SELECT * FROM pedido WHERE id = ?";
-      $con = Conexao::conectar();
-      $stmt = $con->prepare($sql);
-      $stmt->execute(array($id));
-      $dadoBruto = $stmt->fetch(\PDO::FETCH_ASSOC);
-      $con = Conexao::desconectar();
+    $sql = "SELECT * FROM itemPedido WHERE idPedido = ? FOR UPDATE";
+    $stmt = $con->prepare($sql);
+    $stmt->execute([$idPedido]);
+    $dadosBrutos = $stmt->fetchAll(\PDO::FETCH_ASSOC);
+    $itens = [];
 
-      if (!$dadoBruto) {
-        return null;
-      }
-
-      $itemPedido = new ItemPedido();
-      $itemPedido->setId($dadoBruto['id']);
-
-      return $itemPedido;
-    } catch (\PDOException $e) {
-      return null;
+    foreach ($dadosBrutos as $linha) {
+      $item = new ItemPedido();
+      $item->setIdPedido($linha['idPedido']);
+      $item->setIdProduto($linha['idProduto']);
+      $item->setQuantidade($linha['quantidade']);
+      $item->setPrecoUnitario($linha['precoUnitario']);
+      $itens[$item->getIdProduto()] = $item;
     }
+
+    return $itens;
+  }
+
+  public function Insert(ItemPedido $itemPedido, \PDO $con)
+  {
+    $sql = "INSERT INTO itemPedido (idPedido, idProduto, quantidade, precoUnitario)
+            VALUES (?, ?, ?, ?)";
+    $stmt = $con->prepare($sql);
+
+    return $stmt->execute([
+      $itemPedido->getIdPedido(),
+      $itemPedido->getIdProduto(),
+      $itemPedido->getQuantidade(),
+      $itemPedido->getPrecoUnitario(),
+    ]);
+  }
+
+  public function DeleteByPedido(int $idPedido, \PDO $con)
+  {
+    $stmt = $con->prepare("DELETE FROM itemPedido WHERE idPedido = ?");
+    return $stmt->execute([$idPedido]);
   }
 }

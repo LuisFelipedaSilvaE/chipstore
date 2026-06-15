@@ -4,8 +4,6 @@ namespace model;
 
 class ItemPedido
 {
-    private ?int $id;
-
     private ?int $idPedido;
 
     private ?int $idProduto;
@@ -15,17 +13,6 @@ class ItemPedido
     private ?float $precoUnitario;
 
     public function __construct() {}
-
-    public function getId()
-    {
-        return $this->id;
-    }
-
-    public function setId(int $id)
-    {
-        $this->id = $id;
-    }
-
 
     public function getIdPedido()
     {

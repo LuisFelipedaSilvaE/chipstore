@@ -8,6 +8,8 @@ class Pedido
 
     private ?int $idCliente;
 
+    private ?string $nomeCliente;
+
     private ?string $dataPedido;
 
     private ?string $status;
@@ -39,6 +41,16 @@ class Pedido
         $this->idCliente = $idCliente;
     }
 
+    public function getNomeCliente()
+    {
+        return $this->nomeCliente;
+    }
+
+    public function setNomeCliente(?string $nomeCliente)
+    {
+        $this->nomeCliente = $nomeCliente;
+    }
+
 
     public function getDataPedido()
     {
@@ -65,7 +77,7 @@ class Pedido
         return $this->pagamento;
     }
 
-    public function setPagamento(string $pagamento)
+    public function setPagamento(?string $pagamento)
     {
         $this->pagamento = $pagamento;
     }
