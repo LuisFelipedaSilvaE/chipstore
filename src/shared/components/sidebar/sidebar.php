@@ -29,7 +29,7 @@ $usuario = $dal->findById($idUsuarioLogado);
   </div>
   <nav
     id="sidebar"
-    class="absolute top-0 right-full lg:static w-screen sm:w-4/5 lg:w-100 h-screen flex flex-col bg-[var(--sidebar-bg-color)] border-r border-r-gray-800 transition-all duration-300 ease-in-out lg:translate-x-0 z-10">
+    class="fixed overflow-auto scrollbar-none top-0 right-full lg:static w-screen sm:w-4/5 lg:w-100 h-screen flex flex-col bg-[var(--sidebar-bg-color)] border-r border-r-gray-800 transition-all duration-300 ease-in-out lg:translate-x-0 z-10">
     <div id="sidebar-header" class="sidebar-header flex items-center justify-center p-3 lg:pr-3 gap-2">
       <div
         id="sidebar-logo" class="relative before:shadow-[0px_0px_30px_10px_var(--main-color)] before:bottom-1/2 before:absolute before:right-1/2">

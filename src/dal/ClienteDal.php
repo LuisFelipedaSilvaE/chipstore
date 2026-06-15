@@ -26,11 +26,12 @@ class ClienteDal
         $cliente = new Cliente();
 
 
-        $cliente->setId($linha['id_cliente']);
+        $cliente->setId($linha['id']);
         $cliente->setNome($linha['nome']);
         $cliente->setEmail($linha['email']);
         $cliente->setTelefone($linha['telefone']);
         $cliente->setCidade($linha['cidade']);
+        $cliente->setDataCadastro($linha['dataCadastro']);
 
         $listaClientes[] = $cliente;
       }
@@ -64,10 +65,51 @@ class ClienteDal
       $cliente->setEmail($dadoBruto['email']);
       $cliente->setTelefone($dadoBruto['telefone']);
       $cliente->setCidade($dadoBruto['cidade']);
+      $cliente->setDataCadastro($dadoBruto['dataCadastro']);
 
       return $cliente;
     } catch (\PDOException $e) {
       return null;
+    }
+  }
+
+  public function isEmailRegisteredNotEquals(string $email, int $id)
+  {
+    try {
+      $sql = "SELECT email FROM cliente WHERE email = ? AND id != ?";
+      $con = Conexao::conectar();
+      $stmt = $con->prepare($sql);
+      $stmt->execute([$email, $id]);
+      $dadoBruto = $stmt->fetch(\PDO::FETCH_ASSOC);
+      Conexao::desconectar();
+
+      if (!$dadoBruto) {
+        return false;
+      }
+
+      return true;
+    } catch (\PDOException $e) {
+      return false;
+    }
+  }
+
+  public function isEmailRegistered(string $email)
+  {
+    try {
+      $sql = "SELECT email FROM cliente WHERE email = ?";
+      $con = Conexao::conectar();
+      $stmt = $con->prepare($sql);
+      $stmt->execute([$email]);
+      $dadoBruto = $stmt->fetch(\PDO::FETCH_ASSOC);
+      Conexao::desconectar();
+
+      if (!$dadoBruto) {
+        return false;
+      }
+
+      return true;
+    } catch (\PDOException $e) {
+      return false;
     }
   }
 
@@ -97,7 +139,7 @@ class ClienteDal
   public function Update(Cliente $cliente)
   {
     try {
-      $sql = "UPDATE cliente SET nome = ?, email = ?, senha = ?, telefone = ?, cidade = ? WHERE id = ?";
+      $sql = "UPDATE cliente SET nome = ?, email = ?, telefone = ?, cidade = ? WHERE id = ?";
 
       $con = Conexao::conectar();
       $stmt = $con->prepare($sql);

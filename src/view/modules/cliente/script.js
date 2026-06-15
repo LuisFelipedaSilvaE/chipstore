@@ -4,8 +4,8 @@ const dialogMask = document.getElementById('delete-confirmation-dialog-mask')
 const dialog = document.getElementById('delete-confirmation-dialog')
 const dialogDismissButtons = document.querySelectorAll('.dialog-dismiss-button')
 const dialogConfirmButton = document.getElementById('dialog-confirm-button')
-const dialogProductNameContainer = document.getElementById('product-to-delete-name')
-const productNames = document.querySelectorAll('.product-name')
+const dialogClientNameContainer = document.getElementById('client-to-delete-name')
+const clientNames = document.querySelectorAll('.client-name')
 const deleteButtons = document.querySelectorAll('.delete-button')
 const toggleDialog = () => {
   if (dialog.classList.contains('hidden')) {
@@ -36,10 +36,10 @@ dialogDismissButtons.forEach(element => element.addEventListener('click', toggle
 
 deleteButtons.forEach((element, index) => {
   element.addEventListener('click', () => {
-    dialogProductNameContainer.innerText = `\'${productNames[index].innerText}\'`
+    dialogClientNameContainer.innerText = `\'${clientNames[index].innerText}\'`
     dialogConfirmButton.setAttribute(
       'href',
-      `../../actions/produto/remover-produto-action.php?id=${element.dataset.produtoId}`,
+      `../../actions/cliente/remover-cliente-action.php?id=${element.dataset.clienteId}`,
     )
     toggleDialog()
   })

@@ -2,7 +2,6 @@
 
 namespace model;
 
-
 class Cliente
 {
     private ?int $id;
@@ -11,7 +10,7 @@ class Cliente
     private ?string $senha;
     private ?string $telefone;
     private ?string $cidade;
-    private ?string $data_cadastro;
+    private ?string $dataCadastro;
 
 
 
@@ -79,11 +78,11 @@ class Cliente
 
     public function getDataCadastro()
     {
-        return $this->data_cadastro;
+        return $this->dataCadastro;
     }
 
-    public function setDataCadastro(string $data_cadastro)
+    public function setDataCadastro(string $dataCadastro)
     {
-        $this->data_cadastro = $data_cadastro;
+        $this->dataCadastro = $dataCadastro;
     }
 }
