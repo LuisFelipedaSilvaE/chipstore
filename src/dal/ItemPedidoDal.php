@@ -58,8 +58,7 @@ class ItemPedidoDal
 
   public function Insert(ItemPedido $itemPedido, \PDO $con)
   {
-    $sql = "INSERT INTO itemPedido (idPedido, idProduto, quantidade, precoUnitario)
-            VALUES (?, ?, ?, ?)";
+    $sql = "INSERT INTO itemPedido (idPedido, idProduto, quantidade, precoUnitario) VALUES (?, ?, ?, ?)";
     $stmt = $con->prepare($sql);
 
     return $stmt->execute([

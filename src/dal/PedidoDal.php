@@ -72,30 +72,6 @@ class PedidoDal
             return null;
         }
     }
-    public function Insert(Pedido $pedido)
-    {
-        try {
-            $sql = "INSERT INTO pedido (idCliente, dataPedido, status, pagamento, valorTotal) VALUES (?, ?, ?, ?, ?)";
-
-            $con = Conexao::conectar();
-            $stmt = $con->prepare($sql);
-
-            $result = $stmt->execute([
-                $pedido->getIdCliente(),
-                $pedido->getDataPedido(),
-                $pedido->getStatus(),
-                $pedido->getPagamento(),
-                $pedido->getValorTotal(),
-            ]);
-
-            Conexao::desconectar();
-
-            return $result;
-        } catch (\PDOException $e) {
-            return false;
-        }
-    }
-
     public function InsertAndReturnId(Pedido $pedido, \PDO $con)
     {
         $sql = "INSERT INTO pedido (idCliente, dataPedido, status, pagamento, valorTotal) VALUES (?, ?, ?, ?, ?)";
@@ -131,6 +107,8 @@ class PedidoDal
     public function CreateWithItems(Pedido $pedido, array $itensRecebidos)
     {
         $con = null;
+
+        //Esse metodo vai englobar a logica complexa de criar um pedido e adicionar produtos a eles
 
         try {
             $con = Conexao::conectar();
@@ -202,6 +180,7 @@ class PedidoDal
     {
         $con = null;
 
+        //Esse metodo vai englobar a logica complexa de atualizar um pedido
         try {
             $con = Conexao::conectar();
             $con->beginTransaction();
