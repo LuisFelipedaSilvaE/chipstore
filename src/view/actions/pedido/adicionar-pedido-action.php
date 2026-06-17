@@ -1,17 +1,9 @@
 <?php
 session_start();
-include_once($_SERVER['DOCUMENT_ROOT'] . '/dal/Conexao.php');
-include_once($_SERVER['DOCUMENT_ROOT'] . '/dal/ItemPedidoDal.php');
 include_once($_SERVER['DOCUMENT_ROOT'] . '/dal/PedidoDal.php');
-include_once($_SERVER['DOCUMENT_ROOT'] . '/dal/ProdutoDal.php');
-include_once($_SERVER['DOCUMENT_ROOT'] . '/model/ItemPedido.php');
 include_once($_SERVER['DOCUMENT_ROOT'] . '/model/Pedido.php');
 
-use \dal\Conexao;
-use \dal\ItemPedidoDal;
 use \dal\PedidoDal;
-use \dal\ProdutoDal;
-use \model\ItemPedido;
 use \model\Pedido;
 
 if (!isset($_SESSION['usuario-logado'])) {
@@ -60,76 +52,19 @@ if (
   exit;
 }
 
-$con = Conexao::conectar();
-
 try {
-  $con->beginTransaction();
-
-  $produtoDal = new ProdutoDal();
-  $produtos = $produtoDal->findByIdsForUpdate($ids, $con);
-
-  if (count($produtos) !== count($ids)) {
-    throw new \RuntimeException('Um dos produtos selecionados não existe.');
-  }
-
-  $valorTotal = 0;
-
-  foreach ($itensRecebidos as $item) {
-    $produto = $produtos[$item['idProduto']];
-
-    if ($item['quantidade'] > $produto->getEstoque()) {
-      throw new \RuntimeException(
-        'Estoque insuficiente para o produto ' . $produto->getNome() . '.'
-      );
-    }
-
-    $valorTotal += $produto->getPreco() * $item['quantidade'];
-  }
-
   $pedido = new Pedido();
   $pedido->setIdCliente($dados['idCliente']);
   $pedido->setDataPedido($data->format('Y-m-d H:i:s'));
   $pedido->setStatus($dados['status']);
   $pedido->setPagamento($dados['pagamento'] ?: null);
-  $pedido->setValorTotal(round($valorTotal, 2));
 
-  $idPedido = (new PedidoDal())->InsertAndReturnId($pedido, $con);
-
-  if (!$idPedido) {
-    throw new \RuntimeException('Não foi possível criar o pedido.');
-  }
-
-  $itemPedidoDal = new ItemPedidoDal();
-
-  foreach ($itensRecebidos as $itemRecebido) {
-    $produto = $produtos[$itemRecebido['idProduto']];
-    $itemPedido = new ItemPedido();
-    $itemPedido->setIdPedido($idPedido);
-    $itemPedido->setIdProduto($produto->getId());
-    $itemPedido->setQuantidade($itemRecebido['quantidade']);
-    $itemPedido->setPrecoUnitario($produto->getPreco());
-
-    if (!$itemPedidoDal->Insert($itemPedido, $con)) {
-      throw new \RuntimeException('Não foi possível adicionar os produtos ao pedido.');
-    }
-
-    if (!$produtoDal->decreaseStock($produto->getId(), $itemRecebido['quantidade'], $con)) {
-      throw new \RuntimeException('O estoque de um produto foi alterado. Tente novamente.');
-    }
-  }
-
-  $con->commit();
-  Conexao::desconectar();
+  (new PedidoDal())->CreateWithItems($pedido, $itensRecebidos);
 
   $_SESSION['msg-pedido-criado'] = true;
   header('Location: /view/modules/pedido/');
   exit;
 } catch (\Throwable $e) {
-  if ($con->inTransaction()) {
-    $con->rollBack();
-  }
-
-  Conexao::desconectar();
   $_SESSION['msg-erro-salvando-pedido'] = $e->getMessage();
   $_SESSION['conteudo-pedido-erro'] = $dados;
   header('Location: /view/modules/pedido/adicionar/');
