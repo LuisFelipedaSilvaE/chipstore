@@ -4,6 +4,7 @@ session_start();
 
 if (!isset($_SESSION['usuario-logado'])) {
   header("Location: /view/login");
+  exit;
 }
 
 if (isset($_SESSION['conteudo-cliente-erro'])) {

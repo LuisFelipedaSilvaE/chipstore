@@ -7,10 +7,12 @@ use \dal\ClienteDal;
 
 if (!isset($_SESSION['usuario-logado'])) {
   header("Location: /view/login");
+  exit;
 }
 
 if (!isset($_GET['id'])) {
   header("Location: /view/modules/cliente");
+  exit;
 }
 
 $dal = new ClienteDal();
