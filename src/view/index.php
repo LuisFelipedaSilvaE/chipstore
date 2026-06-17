@@ -3,6 +3,7 @@ session_start();
 
 if (!isset($_SESSION['usuario-logado'])) {
   header("Location: /view/login");
+  exit;
 }
 ?>
 <!DOCTYPE html>

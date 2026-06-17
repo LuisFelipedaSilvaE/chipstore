@@ -19,20 +19,9 @@ class ItemPedido
         return $this->idPedido;
     }
 
-    public function setIdPedido(int $idPedido)
-    {
-        $this->idPedido = $idPedido;
-    }
-
-
     public function getIdProduto()
     {
         return $this->idProduto;
-    }
-
-    public function setIdProduto(int $idProduto)
-    {
-        $this->idProduto = $idProduto;
     }
 
     public function getQuantidade()
@@ -40,14 +29,25 @@ class ItemPedido
         return $this->quantidade;
     }
 
-    public function setQuantidade(int $quantidade)
-    {
-        $this->quantidade = $quantidade;
-    }
-
     public function getPrecoUnitario()
     {
         return $this->precoUnitario;
+    }
+
+    public function setIdPedido(int $idPedido)
+    {
+        $this->idPedido = $idPedido;
+    }
+
+
+    public function setIdProduto(int $idProduto)
+    {
+        $this->idProduto = $idProduto;
+    }
+
+    public function setQuantidade(int $quantidade)
+    {
+        $this->quantidade = $quantidade;
     }
 
     public function setPrecoUnitario(float $preco)

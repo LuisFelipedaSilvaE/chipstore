@@ -97,9 +97,7 @@ class ProdutoDal
 
     public function decreaseStock(int $idProduto, int $quantidade, \PDO $con)
     {
-        $sql = "UPDATE produto
-                SET estoque = estoque - ?
-                WHERE id = ? AND estoque >= ?";
+        $sql = "UPDATE produto SET estoque = estoque - ? WHERE id = ? AND estoque >= ?";
         $stmt = $con->prepare($sql);
         $stmt->execute([$quantidade, $idProduto, $quantidade]);
 

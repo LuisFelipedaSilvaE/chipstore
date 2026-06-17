@@ -4,6 +4,7 @@ include_once($_SERVER['DOCUMENT_ROOT'] . '/dal/ClienteDal.php');
 
 if (!isset($_SESSION['usuario-logado'])) {
   header("Location: /view/login");
+  exit;
 }
 
 use \dal\ClienteDal;
