@@ -100,7 +100,7 @@ function renderizarOpcoesProdutos(array $produtos, $selecionado = null)
             </div>
             <div class="flex flex-col gap-1">
               <label class="font-bold text-sm" for="dataPedido">Data do pedido</label>
-              <input class="w-full px-2 py-2 rounded-lg border border-gray-800 bg-(--input-bg-color) outline-none focus:border-(--main-color)" id="dataPedido" name="dataPedido" type="datetime-local" value="<?php echo htmlspecialchars($conteudo['dataPedido'] ?? date('Y-m-d\TH:i')) ?>" required>
+              <input class="w-full px-2 py-2 rounded-lg border border-gray-800 bg-(--input-bg-color) outline-none focus:border-(--main-color) [color-scheme:dark]" id="dataPedido" name="dataPedido" type="datetime-local" value="<?php echo htmlspecialchars($conteudo['dataPedido'] ?? date('Y-m-d\TH:i')) ?>" required>
             </div>
             <div class="flex flex-col gap-1">
               <label class="font-bold text-sm" for="status">Status</label>
