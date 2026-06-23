@@ -59,3 +59,31 @@ document.addEventListener('DOMContentLoaded', () => {
     setTimeout(() => element.classList.add('hidden'), 2000)
   })
 })
+
+const filterInputs = document.querySelectorAll('#filtros [data-filter]')
+
+function applyFilters() {
+  const values = {}
+  filterInputs.forEach(f => (values[f.dataset.filter] = f.value.toLowerCase().trim()))
+
+  let linhasVisiveis = 0
+
+  document.querySelectorAll('tbody tr').forEach(row => {
+    if (row.querySelector('td[colspan]')) return
+
+    const matchNome = !values.nome || row.querySelector('.user-name').textContent.toLowerCase().includes(values.nome)
+    const matchEmail = !values.email || row.children[2].textContent.toLowerCase().includes(values.email)
+    const visivel = matchNome && matchEmail
+    row.style.display = visivel ? 'table-row' : 'none'
+    if (visivel) linhasVisiveis++
+  })
+
+  document.getElementById('filtro-vazio').style.display = linhasVisiveis === 0 ? 'table-row' : 'none'
+}
+
+filterInputs.forEach(f => f.addEventListener('input', applyFilters))
+
+document.getElementById('limpar-filtros')?.addEventListener('click', () => {
+  filterInputs.forEach(f => (f.value = ''))
+  applyFilters()
+})

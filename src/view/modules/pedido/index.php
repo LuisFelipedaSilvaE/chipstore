@@ -85,7 +85,29 @@ function classesStatusPedido(string $status)
     endforeach;
     ?>
 
-    <div class="border border-gray-800 mt-6 rounded-2xl overflow-auto scrollbar-none max-h-194.5">
+    <form id="filtros" class="flex flex-wrap gap-3 items-end mt-4" onsubmit="return false">
+      <div class="w-full sm:w-auto">
+        <label class="text-xs text-gray-400 block mb-1">Nº Pedido</label>
+        <input name="id" placeholder="Ex: 1" type="number" min="1" class="w-full sm:w-28 px-3 py-1.5 rounded-lg border border-gray-800 bg-(--input-bg-color) text-sm outline-none focus:border-(--main-color) focus:ring-(--main-color) transition-colors" data-filter="id">
+      </div>
+      <div class="w-full sm:w-auto">
+        <label class="text-xs text-gray-400 block mb-1">Cliente</label>
+        <input name="cliente" placeholder="Buscar por cliente..." class="w-full sm:w-48 px-3 py-1.5 rounded-lg border border-gray-800 bg-(--input-bg-color) text-sm outline-none focus:border-(--main-color) focus:ring-(--main-color) transition-colors" data-filter="cliente">
+      </div>
+      <div class="w-full sm:w-auto">
+        <label class="text-xs text-gray-400 block mb-1">Status</label>
+        <select name="status" class="w-full sm:w-36 px-3 py-1.5 rounded-lg border border-gray-800 bg-(--input-bg-color) text-sm outline-none focus:border-(--main-color) focus:ring-(--main-color) transition-colors" data-filter="status">
+          <option value="">Todos</option>
+          <option value="Pendente">Pendente</option>
+          <option value="Pago">Pago</option>
+          <option value="Enviado">Enviado</option>
+          <option value="Entregue">Entregue</option>
+          <option value="Cancelado">Cancelado</option>
+        </select>
+      </div>
+      <button type="button" id="limpar-filtros" class="w-full sm:w-auto px-3 py-1.5 rounded-lg border border-gray-800 text-gray-400 hover:bg-(--main-bg-color) transition-colors text-sm">Limpar</button>
+    </form>
+    <div class="border border-gray-800 mt-4 rounded-2xl overflow-auto scrollbar-none max-h-194.5">
       <table class="border-collapse w-full min-w-240">
         <thead class="border-b border-b-gray-800 px-2">
           <tr class="text-gray-400">
@@ -99,6 +121,13 @@ function classesStatusPedido(string $status)
           </tr>
         </thead>
         <tbody>
+          <tr id="filtro-vazio" style="display: none">
+            <td colspan="7" class="text-center text-gray-400 font-bold h-30">
+              <div class="flex justify-center items-center gap-3 text-lg">
+                <i class="fa fa-search text-2xl"></i>Nenhum pedido encontrado.
+              </div>
+            </td>
+          </tr>
           <?php if ($quantidadeCadastrada === 0): ?>
             <tr>
               <td class="py-4 pl-4 text-center text-gray-400 font-bold h-30" colspan="7">
@@ -156,7 +185,7 @@ function classesStatusPedido(string $status)
   </div>
 
   <script src="/shared/components/sidebar/sidebar.js"></script>
-  <script src="./script.js"></script>
+  <script src="./script.js?v=2"></script>
 </body>
 
 </html>

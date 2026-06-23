@@ -45,3 +45,34 @@ document.querySelectorAll('.delete-button').forEach(button => {
 setTimeout(() => {
   messageContainers.forEach(container => container.classList.add('hidden'))
 }, 3000)
+
+const filterInputs = document.querySelectorAll('#filtros [data-filter]')
+
+function applyFilters() {
+  const values = {}
+  filterInputs.forEach(f => (values[f.dataset.filter] = f.value.trim()))
+
+  let linhasVisiveis = 0
+
+  document.querySelectorAll('tbody tr').forEach(row => {
+    if (row.querySelector('td[colspan]')) return
+
+    const matchId = !values.id || row.children[0].textContent.replace('#', '').trim() === values.id
+    const matchCliente =
+      !values.cliente || row.children[1].textContent.toLowerCase().includes(values.cliente.toLowerCase())
+    const matchStatus = !values.status || row.children[3].textContent.trim() === values.status
+    const visivel = matchId && matchCliente && matchStatus
+    row.style.display = visivel ? 'table-row' : 'none'
+    if (visivel) linhasVisiveis++
+  })
+
+  document.getElementById('filtro-vazio').style.display = linhasVisiveis === 0 ? 'table-row' : 'none'
+}
+
+filterInputs.forEach(f => f.addEventListener('input', applyFilters))
+filterInputs.forEach(f => f.addEventListener('change', applyFilters))
+
+document.getElementById('limpar-filtros')?.addEventListener('click', () => {
+  filterInputs.forEach(f => (f.value = ''))
+  applyFilters()
+})

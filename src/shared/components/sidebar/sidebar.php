@@ -110,5 +110,5 @@ $usuario = $dal->findById($idUsuarioLogado);
       </a>
     </div>
   </nav>
-  <div class="sidebar-mobile-mask hidden absolute left-0 top-0 w-screen opacity-0 h-screen lg:hidden bg-black/50 transition-opacity"></div>
+  <div class="sidebar-mobile-mask fixed hidden left-0 top-0 w-screen opacity-0 h-screen lg:hidden bg-black/50 transition-opacity"></div>
 </aside>

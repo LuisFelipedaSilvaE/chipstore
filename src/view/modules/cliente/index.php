@@ -80,7 +80,22 @@ function normalizeDate(string $data)
       unset($_SESSION['msg-cliente-deletado-erro']);
     endif;
     ?>
-    <div class="border border-gray-800 mt-6 rounded-2xl overflow-auto scrollbar-none max-h-194.5">
+    <form id="filtros" class="flex flex-wrap gap-3 items-end mt-4" onsubmit="return false">
+      <div class="w-full sm:w-auto">
+        <label class="text-xs text-gray-400 block mb-1">Nome</label>
+        <input name="nome" placeholder="Buscar por nome..." class="w-full sm:w-48 px-3 py-1.5 rounded-lg border border-gray-800 bg-(--input-bg-color) text-sm outline-none focus:border-(--main-color) focus:ring-(--main-color) transition-colors" data-filter="nome">
+      </div>
+      <div class="w-full sm:w-auto">
+        <label class="text-xs text-gray-400 block mb-1">Email</label>
+        <input name="email" placeholder="Buscar por email..." class="w-full sm:w-48 px-3 py-1.5 rounded-lg border border-gray-800 bg-(--input-bg-color) text-sm outline-none focus:border-(--main-color) focus:ring-(--main-color) transition-colors" data-filter="email">
+      </div>
+      <div class="w-full sm:w-auto">
+        <label class="text-xs text-gray-400 block mb-1">Cidade</label>
+        <input name="cidade" placeholder="Buscar por cidade..." class="w-full sm:w-48 px-3 py-1.5 rounded-lg border border-gray-800 bg-(--input-bg-color) text-sm outline-none focus:border-(--main-color) focus:ring-(--main-color) transition-colors" data-filter="cidade">
+      </div>
+      <button type="button" id="limpar-filtros" class="w-full sm:w-auto px-3 py-1.5 rounded-lg border border-gray-800 text-gray-400 hover:bg-(--main-bg-color) transition-colors text-sm">Limpar</button>
+    </form>
+    <div class="border border-gray-800 mt-4 rounded-2xl overflow-auto scrollbar-none max-h-194.5">
       <table class="border-collapse w-full min-w-220">
         <thead class="border-b border-b-gray-800 px-2">
           <tr class="text-gray-400">
@@ -93,6 +108,13 @@ function normalizeDate(string $data)
           </tr>
         </thead>
         <tbody>
+          <tr id="filtro-vazio" style="display: none">
+            <td colspan="6" class="text-center text-gray-400 font-bold h-30">
+              <div class="flex justify-center items-center gap-3 text-lg">
+                <i class="fa fa-search text-2xl"></i>Nenhum cliente encontrado.
+              </div>
+            </td>
+          </tr>
           <?php if (count($listaClientes) == 0): ?>
             <tr>
               <td class="py-4 pl-4 text-center text-gray-400 font-bold h-30" colspan="6">
@@ -152,7 +174,7 @@ function normalizeDate(string $data)
   </div>
 
   <script src="/shared/components/sidebar/sidebar.js"></script>
-  <script src="./script.js"></script>
+  <script src="./script.js?v=2"></script>
 </body>
 
 </html>
