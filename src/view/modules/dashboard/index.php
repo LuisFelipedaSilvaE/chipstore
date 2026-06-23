@@ -70,10 +70,7 @@ foreach (array_reverse($pedidos) as $pedido) {
 $labelsChart = array_keys($faturamentoPorMes);
 $dataChart = array_values($faturamentoPorMes);
 
-if (empty($labelsChart)) {
-  $labelsChart = ['fev.', 'abr.', 'mai.'];
-  $dataChart = [1000, 500, 1500];
-}
+$temFaturamento = !empty($labelsChart);
 
 ?>
 <!DOCTYPE html>
@@ -145,9 +142,16 @@ if (empty($labelsChart)) {
     <div class="grid grid-cols-1 xl:grid-cols-3 gap-6">
       <div class="xl:col-span-2 bg-(--secondary-bg-color) border border-gray-800 rounded-2xl p-6">
         <h3 class="font-bold mb-6">Faturamento por mês</h3>
+        <?php if ($temFaturamento): ?>
         <div class="w-full h-64">
           <canvas id="faturamentoChart"></canvas>
         </div>
+        <?php else: ?>
+        <div class="flex flex-col items-center justify-center h-64 text-gray-400 gap-4">
+          <i class="fa fa-chart-bar text-5xl"></i>
+          <p class="text-lg">Nenhum dado de faturamento para exibir.</p>
+        </div>
+        <?php endif; ?>
       </div>
 
       <div class="bg-(--secondary-bg-color) border border-gray-800 rounded-2xl p-6">
@@ -183,6 +187,7 @@ if (empty($labelsChart)) {
 
   <script src="/shared/components/sidebar/sidebar.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <?php if ($temFaturamento): ?>
   <script>
     const ctx = document.getElementById('faturamentoChart');
     new Chart(ctx, {
@@ -241,6 +246,7 @@ if (empty($labelsChart)) {
       }
     });
   </script>
+  <?php endif; ?>
 </body>
 
 </html>
