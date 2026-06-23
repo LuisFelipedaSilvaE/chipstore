@@ -105,7 +105,7 @@ function renderizarOpcoesProdutos(array $produtos, $selecionado = null)
             <div class="flex flex-col gap-1">
               <label class="font-bold text-sm" for="status">Status</label>
               <select class="w-full px-2 py-2 rounded-lg border border-gray-800 bg-(--input-bg-color) outline-none focus:border-(--main-color)" id="status" name="status" required>
-                <?php foreach (['Pendente', 'Pago', 'Enviado', 'Entregue', 'Cancelado'] as $status): ?>
+                <?php foreach (['Pendente', 'Pago', 'Enviado', 'Entregue'] as $status): ?>
                   <option value="<?php echo $status ?>" <?php echo ($conteudo['status'] ?? 'Pendente') === $status ? 'selected' : '' ?>><?php echo $status ?></option>
                 <?php endforeach; ?>
               </select>
